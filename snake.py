@@ -39,14 +39,15 @@ def main(mode):
                 if snake.colliderect(prize):
                     Snake("yellow", before_movement[-1][0], before_movement[-1][1])
                     Prize.prizes.remove(prize_)
+                    
                     if len(Snake.snake_pieces) == screen.get_height()//40*screen.get_width()//40:
                         won_text = font.render("You won!!", False, "green") # displying u won message
                         screen.blit(won_text, (920//2-60,640//2-20))
                         pygame.display.update()
                         time.sleep(3)
 
-                        import main
-                        main.main()
+                        import snake
+                        snake.main()
                         return # exit
                     else:
                         Prize().spawn()
@@ -136,6 +137,7 @@ def main(mode):
         screen.fill("black")
 
         current_time = pygame.time.get_ticks()
+        # move only every 0.15 seconds
         if current_time - last_time >= 150:
             before_movement = []
             for snake_piece in Snake.snake_pieces:
@@ -151,10 +153,13 @@ def main(mode):
 
             last_time = current_time
 
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
+
+
             elif event.type == KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     import snake_menu
